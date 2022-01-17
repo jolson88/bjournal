@@ -13,7 +13,8 @@ configure_file(include/config.h.in
 # EXECUTABLE
 #
 add_executable(bjournal
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/main.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/atom.c")
 target_include_directories(bjournal PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set_target_properties(bjournal
