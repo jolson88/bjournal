@@ -1,2 +1,2 @@
-# bjournal
-A CLI-based bullet journaling tool
+# template-c
+Simple project template for a C project using CMake
