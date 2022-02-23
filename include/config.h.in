@@ -1,7 +1,0 @@
-#ifndef __CONFIG_H
-#define __CONFIG_H
-
-#define VERSION_MAJOR @bjournal_VERSION_MAJOR@
-#define VERSION_MINOR @bjournal_VERSION_MINOR@
-
-#endif

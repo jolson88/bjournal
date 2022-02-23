@@ -1,2 +1,3 @@
-# template-c
-Simple project template for a C project using CMake
+# bjournal
+A simple CLI-based program for bullet journaling
+
