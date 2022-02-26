@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from typing import Callable
 
 @dataclass
 class Task:
@@ -7,51 +8,57 @@ class Task:
 	date: date
 	status: str
 
+tasks: list[Task] = []
+
 @dataclass
 class CommandContext:
-	originalInput: str
+	original_input: str
 	command: str
-	argumentString: str
+	argument_string: str
 
-def newTaskCommand(ctx: CommandContext):
-	tasks.append(Task(ctx.argumentString, date.today(), "NotStarted"))
+def list_tasks_cmd(_ctx: CommandContext) -> None:
+	for task in tasks:
+		print(f"- {task.name}")
 
-def quitCommand(_ctx: CommandContext):
-	print("Thanks for using bjournal!")
+def new_task_cmd(ctx: CommandContext) -> None:
+	tasks.append(Task(ctx.argument_string, date.today(), "NotStarted"))
+
+def quit_cmd(_ctx: CommandContext) -> None:
+	print("\nThanks for using bjournal!")
 	exit(0)
 
-def parseInput(userInput: str) -> CommandContext:
-	userInput = userInput + " " # Somewhat of a "hack" to make it easier to parse out command and arguments
-	userCommand = userInput[userInput.find(" "):]
+def parse_input(user_input: str) -> CommandContext:
+	user_input = user_input + " " # Somewhat of a "hack" to make it consistent to parse out command and arguments
+	user_command = user_input[user_input.find(" "):]
 	return CommandContext(
-		originalInput = userInput.strip(),
-		command = userInput[:userInput.find(" ")],
-		argumentString = userInput[userInput.find(" "):].strip()
+		original_input = user_input.strip(),
+		command = user_input[:user_input.find(" ")],
+		argument_string = user_input[user_input.find(" "):].strip()
 	)
 
-commands = {
-	"n": newTaskCommand,
-	"q": quitCommand,
-	"quit": quitCommand,
+commands: dict[str, Callable[[CommandContext], None]] = {
+	"l": list_tasks_cmd,
+	"n": new_task_cmd,
+	"q": quit_cmd,
+	"quit": quit_cmd,
 }
-tasks = []
 
 def main():
 	print("Welcome to bjournal, a programmer's bullet journal.")
 	print("Today's date is", date.today().isoformat())
 	
 	while True:
-		userInput = input("? ")
-		if userInput.strip() == "":
+		user_input = input("? ")
+		if user_input.strip() == "":
 			print("Please enter a command")
 			continue
 
-		commandContext = parseInput(userInput);
-		command = commands.get(commandContext.command)
+		command_ctx = parse_input(user_input);
+		command = commands.get(command_ctx.command)
 		if (command is not None):
-			command(commandContext)
+			command(command_ctx)
 		else:
-			print(f'Command "{commandContext.command}" is not recognized!')
+			print(f'Command "{command_ctx.command}" is not recognized!')
 
 if __name__ == "__main__":
 	main()
